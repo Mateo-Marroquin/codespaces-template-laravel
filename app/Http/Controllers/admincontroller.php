@@ -27,4 +27,19 @@ class admincontroller extends Controller
         $persona->delete();
         return redirect()->back();
     }
+
+    public function mostrar($id){
+        $persona = persona::find($id);
+        return view('modifica', ['persona' => $persona]);
+    }
+
+    public function modifica(Request $request, $id){
+       $persona = persona::find($id);
+       $persona->nombre = $request->nombre;
+       $persona->apellido = $request->apellido;
+       $persona->direccion = $request->direccion;
+       $persona->edad = $request->edad;
+       $persona->save();
+       return redirect()->back();
+    }
 }

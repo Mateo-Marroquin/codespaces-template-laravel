@@ -4,150 +4,135 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>Hola</title>
-
+    <title>Gestión de Personal</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js" crossorigin="anonymous"></script>
-
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 </head>
 
-<body
-    class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] flex p-6 lg:p-8 items-center lg:justify-center min-h-screen flex-col">
-    <div class="w-1/2 borber border-gray-300 rounded-md p-6 bg-gray-100 shadow-md">
-        <form method='post' action='{{ route('guardar.admin') }}'>
-            @csrf
-            <div class="mb-3">
-                <label for="" class="form-label">Nombre: </label>
-                <input type="text"
-                    class="form-control border border-gray-500 rounded-md p-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    name="nombre" id="" aria-describedby="helpId" placeholder="" />
+<body class="bg-slate-50 dark:bg-zinc-950 text-slate-900 dark:text-zinc-100 min-h-screen font-sans">
+
+    <div class="container mx-auto px-4 py-12 max-w-6xl">
+        <div class="mb-10 text-center">
+            <h1 class="text-4xl font-extrabold tracking-tight text-slate-800 dark:text-white">Control de Usuarios</h1>
+            <p class="text-slate-500 mt-2 text-lg">Dashboard</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <div class="lg:col-span-4">
+                <div class="bg-white dark:bg-zinc-900 rounded-2xl shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-200 dark:border-zinc-800 p-8 sticky top-8">
+                    <h2 class="text-xl font-bold mb-6 flex items-center gap-3">
+                        <div class="p-2 bg-blue-500 rounded-lg text-white">
+                            <i class="fa-solid fa-user-plus"></i>
+                        </div>
+                        Nuevo Registro
+                    </h2>
+                    
+                    <form method="POST" action="{{ route('guardar.admin') }}" class="space-y-5">
+                        @csrf
+                        <div>
+                            <label class="block text-sm font-semibold mb-2 opacity-70">Nombre</label>
+                            <input type="text" name="nombre" required placeholder="Ej. Mateo"
+                                class="w-full rounded-xl border border-slate-300 dark:border-zinc-700 bg-transparent p-3 focus:ring-2 focus:ring-blue-500 outline-none transition-all dark:bg-zinc-800/50">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2 opacity-70">Apellido</label>
+                            <input type="text" name="apellido" required placeholder="Ej. Pérez"
+                                class="w-full rounded-xl border border-slate-300 dark:border-zinc-700 bg-transparent p-3 focus:ring-2 focus:ring-blue-500 outline-none transition-all dark:bg-zinc-800/50">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2 opacity-70">Dirección</label>
+                            <input type="text" name="direccion" required placeholder="Av. Universidad..."
+                                class="w-full rounded-xl border border-slate-300 dark:border-zinc-700 bg-transparent p-3 focus:ring-2 focus:ring-blue-500 outline-none transition-all dark:bg-zinc-800/50">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold mb-2 opacity-70">Edad</label>
+                            <input type="number" name="edad" required placeholder="21"
+                                class="w-full rounded-xl border border-slate-300 dark:border-zinc-700 bg-transparent p-3 focus:ring-2 focus:ring-blue-500 outline-none transition-all dark:bg-zinc-800/50">
+                        </div>
+
+                        <button type="submit"
+                            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl transition-all transform hover:scale-[1.02] active:scale-95 shadow-lg shadow-blue-500/25 mt-4">
+                            Guardar Registro
+                        </button>
+                    </form>
+                </div>
             </div>
 
-            <div class="mb-3">
-                <label for="" class="form-label">Apellido: </label>
-                <input type="text"
-                    class="form-control border border-gray-500 rounded-md p-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    name="apellido" id="" aria-describedby="helpId" placeholder="" />
+            <div class="lg:col-span-8">
+                <div class="bg-white dark:bg-zinc-900 rounded-2xl shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-200 dark:border-zinc-800 overflow-hidden">
+                    <div class="p-6 border-b border-slate-100 dark:border-zinc-800 flex justify-between items-center bg-slate-50/50 dark:bg-zinc-800/30">
+                        <h2 class="text-xl font-bold flex items-center gap-3">
+                            <i class="fa-solid fa-database text-blue-500"></i> Base de Datos
+                        </h2>
+                        <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs font-bold rounded-full">
+                            {{ count($personas) }} Registros
+                        </span>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="text-slate-400 text-xs uppercase tracking-widest border-b border-slate-100 dark:border-zinc-800">
+                                    <th class="px-8 py-5 font-bold">Persona</th>
+                                    <th class="px-6 py-5 font-bold">Ubicación</th>
+                                    <th class="px-6 py-5 font-bold text-center">Edad</th>
+                                    <th class="px-8 py-5 font-bold text-right">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-50 dark:divide-zinc-800">
+                                @foreach ($personas as $persona)
+                                    <tr class="hover:bg-slate-50/80 dark:hover:bg-zinc-800/50 transition-all group">
+                                        <td class="px-8 py-5">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/20 text-blue-600 flex items-center justify-center font-bold">
+                                                    {{ substr($persona->nombre, 0, 1) }}
+                                                </div>
+                                                <div>
+                                                    <p class="font-bold text-slate-800 dark:text-white">{{ $persona->nombre }}</p>
+                                                    <p class="text-xs text-slate-400">{{ $persona->apellido }}</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-5 text-sm text-slate-500 dark:text-zinc-400">
+                                            <i class="fa-solid fa-location-dot mr-1 text-slate-300"></i> {{ $persona->direccion }}
+                                        </td>
+                                        <td class="px-6 py-5 text-center">
+                                            <span class="px-2 py-1 rounded-md bg-slate-100 dark:bg-zinc-800 text-xs font-medium">
+                                                {{ $persona->edad }} años
+                                            </span>
+                                        </td>
+                                        <td class="px-8 py-5">
+                                            <div class="flex justify-end gap-3">
+                                                <a href="{{ route('mostrar.persona', $persona->id) }}" 
+                                                   class="p-2.5 bg-amber-50 dark:bg-amber-900/10 text-amber-600 hover:bg-amber-100 rounded-xl transition-all"
+                                                   title="Editar datos">
+                                                    <i class="fa-solid fa-pen-to-square"></i>
+                                                </a>
+
+                                                <form method="POST" action="{{ route('eliminar.admin', $persona->id) }}" onsubmit="return confirm('¿Seguro que quieres eliminar este registro?')">
+                                                    @csrf
+                                                    <button type="submit" 
+                                                        class="p-2.5 bg-rose-50 dark:bg-rose-900/10 text-rose-600 hover:bg-rose-100 rounded-xl transition-all"
+                                                        title="Eliminar registro">
+                                                        <i class="fa-solid fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
 
-            <div class="mb-3">
-                <label for="" class="form-label">Direccion: </label>
-                <input type="text"
-                    class="form-control border border-gray-500 rounded-md p-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    name="direccion" id="" aria-describedby="helpId" placeholder="" />
-            </div>
-
-            <div class="mb-3">
-                <label for="" class="form-label">Edad: </label>
-                <input type="number"
-                    class="form-control border border-gray-500 rounded-md p-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    name="edad" id="" aria-describedby="helpId" placeholder="" />
-            </div>
-
-            <button type="submit"
-                class="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                Enviar
-            </button>
-        </form>
+        </div>
     </div>
 
-    <div class="w-1/2 borber border-gray-300 rounded-md p-4 bg-gray-100 shadow-md mt-6">
-
-        <table class="table-auto text-center w-full border-collapse border border-gray-300 rounded-lg bg-white">
-
-            <thead class="bg-gray-200">
-                <tr>
-                    <th class="py-2">Nombre</th>
-                    <th>Apellido</th>
-                    <th>Direccion</th>
-                    <th>Edad</th>
-                    <th>Opciones</th>
-                </tr>
-            </thead>
-
-            <tbody class="divide-y divide-gray-300">
-                @foreach ($personas as $persona)
-                    <tr>
-                        <td>{{ $persona->nombre }}</td>
-                        <td>{{ $persona->apellido }}</td>
-                        <td>{{ $persona->direccion }}</td>
-                        <td>{{ $persona->edad }}</td>
-                        <td class="text-center gap-4">
-                            <form method='post' action='{{ route('eliminar.admin', $persona->id) }}'>
-                                <button
-                                    class="bg-green-500 text-white font-bold py-1 px-3 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
-                                    @csrf
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
-                                        fill="currentColor">
-                                        <path
-                                            d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
-                                        <path fill-rule="evenodd"
-                                            d="M2 5a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V5z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-
-                <tr>
-                    <td class="py-2">Juan</td>
-                    <td>Perez</td>
-                    <td>Calle 123</td>
-                    <td>30</td>
-                    <td class="text-center gap-4">
-                        <button
-                            class="bg-green-500 text-white font-bold py-1 px-3 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
-                            Editar
-                        </button>
-                        <button
-                            class="bg-red-500 text-white font-bold py-1 px-3 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
-                            Eliminar
-                        </button>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="py-2">Maria</td>
-                    <td>Gomez</td>
-                    <td>Avenida 456</td>
-                    <td>25</td>
-                    <td class="text-center gap-4">
-                        <button
-                            class="bg-green-500 text-white font-bold py-1 px-3 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
-                            Editar
-                        </button>
-                        <button
-                            class="bg-red-500 text-white font-bold py-1 px-3 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
-                            Eliminar
-                        </button>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="py-2">Carlos</td>
-                    <td>Lopez</td>
-                    <td>Calle 789</td>
-                    <td>40</td>
-                    <td class="text-center gap-4">
-                        <button
-                            class="bg-green-500 text-white font-bold py-1 px-3 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
-                            Editar
-                        </button>
-                        <button
-                            class="bg-red-500 text-white font-bold py-1 px-3 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
-                            Eliminar
-                        </button>
-                    </td>
-                </tr>
-
-            </tbody>
-        </table>
-
-    </div>
 </body>
-
 </html>
