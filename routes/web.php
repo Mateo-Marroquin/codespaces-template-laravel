@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admincontroller;
 use App\Http\Controllers\MascotaController;
+use App\Http\Controllers\LoginController;
 
 Route::get('/',[admincontroller::class, 'inicio'])->name('inicio.admin');
 Route::post('/guardar',[admincontroller::class, 'guardar'])->name('guardar.admin');
@@ -15,3 +16,6 @@ Route::post('/mascotas/guardar', [MascotaController::class, 'guardar'])->name('m
 Route::post('/mascotas/eliminar/{id}', [MascotaController::class, 'eliminar'])->name('mascotas.eliminar');
 Route::get('/mascotas/editar/{id}', [MascotaController::class, 'editar'])->name('mascotas.editar');
 Route::post('/mascotas/actualizar/{id}', [MascotaController::class, 'actualizar'])->name('mascotas.actualizar');
+
+Route::get('/login', [LoginController::class, 'index'])->name('login');
+Route::get('/register', [LoginController::class, 'register'])->name('register');
